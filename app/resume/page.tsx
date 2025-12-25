@@ -86,7 +86,7 @@ export default function ResumePage() {
 
         } catch (err: any) {
             console.error("Analysis Failed:", err);
-            setErrorMsg(err.message || "Failed to analyze data. Please try manual entry.");
+            setErrorMsg(err.message || "Network Error: Please try Manual Entry mode.");
             setIsProcessing(false);
         }
     };
