@@ -18,23 +18,18 @@ export default function SFMentor({ skillName, onClose }: SFMentorProps) {
     const [isTyping, setIsTyping] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    // Initial Greeting
+    // Initial Greeting - Only if empty or new skill
     useEffect(() => {
-        setMessages([]); // Reset on open
-        setIsTyping(true);
-
-        let greeting = "";
-        if (skillName) {
-            greeting = `Greetings. I detect you are focusing on the **${skillName}** module. Shall I provide a strategic overview, or do you have a specific query regarding its implementation?`;
-        } else {
-            greeting = "Neural Link Established. I am your Career Guidance Construct. Which skill or career protocol would you like to analyze today? State your objective.";
+        if (messages.length === 0) {
+            setIsTyping(true);
+            setTimeout(() => {
+                setMessages([{ role: 'ai', content: "Neural Link Established. I am your Career Guidance Construct. Ask about any skill or career path." }]);
+                setIsTyping(false);
+            }, 800);
+        } else if (skillName) {
+            // If skill changes, add a focused message instead of clearing
+            setMessages(prev => [...prev, { role: 'ai', content: `Focus shifted to **${skillName}**. How can I assist with this module?` }]);
         }
-
-        setTimeout(() => {
-            setMessages([{ role: 'ai', content: greeting }]);
-            setIsTyping(false);
-        }, 800);
-
     }, [skillName]);
 
     // Auto-scroll
@@ -63,7 +58,7 @@ export default function SFMentor({ skillName, onClose }: SFMentorProps) {
     return (
         <div className="fixed bottom-24 right-6 w-full max-w-[380px] h-[500px] bg-black/95 border border-neon-purple/50 shadow-[0_0_30px_rgba(188,19,254,0.3)] rounded-2xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 backdrop-blur-xl">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 bg-white/5 border-b border-white/10">
+            <div className="flex items-center justify-between p-4 bg-white/5 border-b border-white/10 shrink-0">
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <div className="w-10 h-10 rounded-full bg-neon-purple/20 flex items-center justify-center border border-neon-purple overflow-hidden">
@@ -78,8 +73,11 @@ export default function SFMentor({ skillName, onClose }: SFMentorProps) {
                     </div>
                 </div>
                 <button
-                    onClick={onClose}
-                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onClose();
+                    }}
+                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white z-50 cursor-pointer"
                 >
                     <X className="w-5 h-5" />
                 </button>

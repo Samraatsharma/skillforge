@@ -350,11 +350,13 @@ export default function MapPage() {
                 </div>
             )}
 
-            {/* AI Mentor Drawer */}
-            <SFMentor
-                skillName={showMentor ? (selectedNode?.name || null) : null}
-                onClose={() => setShowMentor(false)}
-            />
+            {/* AI Mentor Drawer - ALWAYS MOUNTED, JUST HIDDEN TO PRESERVE STATE */}
+            <div className={cn("transition-all duration-300", showMentor ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none translate-y-10")}>
+                <SFMentor
+                    skillName={selectedNode?.name || null}
+                    onClose={() => setShowMentor(false)}
+                />
+            </div>
 
             {/* Modal / HUD */}
             {selectedNode && (
