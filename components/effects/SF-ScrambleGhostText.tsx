@@ -54,9 +54,7 @@ export default function SFScrambleGhostText({ text, className, trigger = true }:
 
     return (
         <span ref={elementRef} className={cn("inline-block font-mono", className)}>
-            {Trigger ? '*&@#$#@#$@*&$(@#^)' : text}
+            {'*&@#$#@#$@*&$(@#^)'}
         </span>
     );
 }
-// Fix typo in JSX: Trigger -> trigger (variable check was missing, actually logic handles content replacement)
-// I'll fix the code content in the actual write.

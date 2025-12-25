@@ -1,65 +1,46 @@
-import Image from "next/image";
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import SFScrollDrift from '@/components/effects/SF-Scroll-Drift';
+import SFDockMagnify from '@/components/effects/SF-Dock-Magnify';
+import SFScrollTextMotion from '@/components/effects/SF-Scroll-Text-Motion';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="relative w-full bg-background no-scrollbar">
+      {/* Background Effect (Sticky or Fixed) */}
+      <SFScrollDrift />
+
+      {/* HERO SECTION: Scroll Text Motion - Now the first thing user sees */}
+      <SFScrollTextMotion />
+
+      {/* Secondary CTA Section (After Scroll) */}
+      <section className="min-h-screen flex flex-col items-center justify-center relative z-10 bg-black/80 backdrop-blur-sm">
+        <div className="text-center space-y-8 p-4">
+          <h2 className="text-4xl md:text-6xl font-mono text-neon-cyan mb-4 font-bold tracking-tighter">
+            READY TO UPGRADE?
+          </h2>
+          <p className="text-gray-400 max-w-lg mx-auto mb-8 text-lg">
+            Analyze your resume, identify gaps, and master the neural grid of modern tech skills.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <Link
+            href="/resume"
+            className="group relative inline-flex h-16 items-center justify-center overflow-hidden rounded-full bg-neon-purple/20 border border-neon-purple px-12 font-bold text-neon-purple transition-all duration-300 hover:bg-neon-purple hover:text-black hover:shadow-[0_0_40px_rgba(188,19,254,0.6)] focus:outline-none"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <span className="text-xl mr-2">INITIATE SEQUENCE</span>
+            <span className="group-hover:translate-x-1 transition-transform text-xl">→</span>
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Decorative Gradients */}
+      <div className="fixed top-0 left-0 w-full h-32 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-0" />
+      <div className="fixed bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-0" />
+
+      {/* Bottom Dock */}
+      <SFDockMagnify />
+    </main>
   );
 }
