@@ -15,28 +15,35 @@ export async function POST(req: NextRequest) {
         }
 
         // 1. Parsing PDF Text
-        const arrayBuffer = await file.arrayBuffer();
+        let text = '';
+        try {
+            const arrayBuffer = await file.arrayBuffer();
 
-        // Parse using the initialized pdfjs lib
-        const loadingTask = pdfjs.getDocument({
-            data: new Uint8Array(arrayBuffer),
-            useSystemFonts: true,
-            disableFontFace: true,
-        });
+            // Parse using the initialized pdfjs lib
+            const loadingTask = pdfjs.getDocument({
+                data: new Uint8Array(arrayBuffer),
+                useSystemFonts: true,
+                disableFontFace: true,
+            });
 
-        const pdfDocument = await loadingTask.promise;
-        let fullText = '';
+            const pdfDocument = await loadingTask.promise;
+            let fullText = '';
 
-        for (let i = 1; i <= pdfDocument.numPages; i++) {
-            const page = await pdfDocument.getPage(i);
-            const textContent = await page.getTextContent();
-            // @ts-ignore
-            const pageText = textContent.items.map((item: any) => item.str).join(' ');
-            fullText += pageText + ' ';
+            for (let i = 1; i <= pdfDocument.numPages; i++) {
+                const page = await pdfDocument.getPage(i);
+                const textContent = await page.getTextContent();
+                // @ts-ignore
+                const pageText = textContent.items.map((item: any) => item.str).join(' ');
+                fullText += pageText + ' ';
+            }
+            text = fullText;
+            console.log("Server: PDF Parsed Length:", text.length);
+        } catch (pdfError: any) {
+            console.error("PDF Parsing Error:", pdfError);
+            return NextResponse.json({
+                error: `PDF Read Error: ${pdfError.message || 'Corrupt file'}. Please copy text manually.`
+            }, { status: 400 });
         }
-
-        const text = fullText;
-        console.log("Server: PDF Parsed Length:", text.length);
 
         // 2. AI Analysis (If Key Exists)
         const apiKey = process.env.GEMINI_API_KEY;

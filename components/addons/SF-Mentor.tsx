@@ -61,27 +61,34 @@ export default function SFMentor({ skillName, onClose }: SFMentorProps) {
     };
 
     return (
-        <div className="fixed inset-y-0 right-0 w-full md:w-96 bg-black border-l border-white/10 shadow-2xl z-50 p-4 flex flex-col transform transition-transform duration-300 animate-in slide-in-from-right">
+        <div className="fixed bottom-24 right-6 w-full max-w-[380px] h-[500px] bg-black/95 border border-neon-purple/50 shadow-[0_0_30px_rgba(188,19,254,0.3)] rounded-2xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 backdrop-blur-xl">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/10">
+            <div className="flex items-center justify-between p-4 bg-white/5 border-b border-white/10">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-neon-purple/20 flex items-center justify-center border border-neon-purple overflow-hidden">
-                        <GraduationCap className="w-5 h-5 text-neon-purple" />
+                    <div className="relative">
+                        <div className="w-10 h-10 rounded-full bg-neon-purple/20 flex items-center justify-center border border-neon-purple overflow-hidden">
+                            <Bot className="w-6 h-6 text-neon-purple" />
+                        </div>
+                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-black animate-pulse" />
                     </div>
+
                     <div>
-                        <h2 className="text-sm font-bold text-white">AI MENTOR</h2>
-                        <span className="text-xs text-neon-purple font-mono animate-pulse">ONLINE</span>
+                        <h2 className="text-sm font-bold text-white tracking-wider">AI MENTOR</h2>
+                        <span className="text-[10px] text-neon-purple font-mono uppercase">System Online</span>
                     </div>
                 </div>
-                <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors">
-                    <X className="w-6 h-6" />
+                <button
+                    onClick={onClose}
+                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white"
+                >
+                    <X className="w-5 h-5" />
                 </button>
             </div>
 
             {/* Chat Area */}
             <div
                 ref={scrollRef}
-                className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent"
+                className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-neon-purple/30 scrollbar-track-transparent bg-grid-white/[0.02]"
             >
                 {messages.map((msg, idx) => (
                     <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? "flex-row-reverse" : "")}>

@@ -28,7 +28,7 @@ const careers = [
     { id: 'pm', title: 'Product Manager', icon: LayoutGrid, color: 'text-teal-400', border: 'border-teal-400/50', keywords: ['product', 'agile', 'scrum', 'management'] },
 
     // Non-Technical / Content Roles
-    { id: 'tech-writer', title: 'Technical Writer', icon: PenTool, color: 'text-lime-400', border: 'border-lime-400/50', keywords: ['content', 'writing', 'documentation', 'seo', 'blog', 'copy'] },
+    { id: 'tech-writer', title: 'Technical Writer', icon: PenTool, color: 'text-lime-400', border: 'border-lime-400/50', keywords: ['content', 'writing', 'write', 'writer', 'documentation', 'seo', 'blog', 'copy', 'editing', 'english', 'communications', 'journalism', 'marketing', 'social media', 'creative'] },
     { id: 'da', title: 'Data Analyst', icon: Layers, color: 'text-indigo-400', border: 'border-indigo-400/50', keywords: ['sql', 'excel', 'tableau', 'powerbi'] },
     { id: 'qa', title: 'QA Engineer', icon: Shield, color: 'text-orange-400', border: 'border-orange-400/50', keywords: ['testing', 'selenium', 'cypress', 'manual'] },
     { id: 'sys-admin', title: 'System Admin', icon: Server, color: 'text-gray-400', border: 'border-gray-400/50', keywords: ['linux', 'bash', 'support', 'network'] },

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { X, Check, Lock, ChevronRight, AlertCircle, Play, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { X, Check, Lock, ChevronRight, AlertCircle, Play, ArrowRight, LayoutDashboard, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SFDockMagnify from '@/components/effects/SF-Dock-Magnify';
 import SFScrambleGhostText from '@/components/effects/SF-ScrambleGhostText';
@@ -186,7 +186,34 @@ export default function MapPage() {
         }
     };
 
-    if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-neon-cyan animate-pulse">GENERATING PATHWAY...</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neon-cyan/20 via-black to-black opacity-40 animate-pulse" />
+
+            {/* Hexagon Spinner */}
+            <div className="relative w-24 h-24 mb-8">
+                <div className="absolute inset-0 border-4 border-neon-cyan/30 rounded-full animate-ping" />
+                <div className="absolute inset-2 border-4 border-t-neon-cyan border-r-neon-purple border-b-neon-pink border-l-transparent rounded-full animate-spin" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <Brain className="w-8 h-8 text-white animate-bounce" />
+                </div>
+            </div>
+
+            <div className="space-y-2 text-center z-10">
+                <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple animate-pulse">
+                    CONSTRUCTING NEURAL PATHWAY
+                </h2>
+                <div className="flex flex-col items-center gap-1">
+                    <span className="text-xs font-mono text-neon-cyan/70">
+                        Analyzing: {typeof window !== 'undefined' ? localStorage.getItem('skillforge_role') || 'PROTOCOL' : 'PROTOCOL'}
+                    </span>
+                    <span className="text-[10px] font-mono text-gray-500 animate-pulse">
+                        [||||||||||||||||||||] PROCESSING
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-background relative flex flex-col overflow-hidden">
