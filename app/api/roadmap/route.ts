@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
 
         // 1. Dynamic Model Discovery (Same logic as analyze)
         let modelName = "gemini-1.5-flash";
+
+        // CHECK QUOTA LIMITS FIRST (Simple heuristic or env flag)
+        // If we hit 429 recently, we might want to skip, but for now we just handle the error.
+
         try {
             const modelsResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
             if (modelsResp.ok) {
@@ -25,26 +29,33 @@ export async function POST(req: NextRequest) {
                     (m.name.includes("flash") || m.name.includes("pro") || m.name.includes("gemini"))
                 );
                 if (viableModel) modelName = viableModel.name.replace("models/", "");
+            } else if (modelsResp.status === 429) {
+                console.warn("Gemini Quota Exceeded (Discovery). Using Offline Fallback.");
+                return NextResponse.json({ roadmap: [] }); // Empty returns trigger fallback in FE
             }
         } catch (e) { }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: modelName });
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ model: modelName });
 
-        const prompt = `
-        Create a linear, gamified skill tree roadmap for the role: "${role}".
-        Generate exactly 20 nodes (levels) starting from Beginner to Expert.
-        
-        Return ONLY a JSON array of strings, where each string is a short skill name (e.g., "Python Basics", "Neural Networks").
-        Example: ["Skill 1", "Skill 2", ... "Skill 20"]
-        `;
+            const prompt = `Generate a linear skill tree for a "${role}". 
+             Return STRICTLY a JSON array of strings (max 20 items). 
+             Example: ["HTML", "CSS", "JS"]. 
+             NO markdown, NO explanations.`;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
-        const roadmap = JSON.parse(text);
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
 
-        return NextResponse.json({ roadmap });
+            const roadmap = JSON.parse(text);
+            return NextResponse.json({ roadmap });
+
+        } catch (error: any) {
+            console.error("Gemini Generation Error:", error);
+            // FAIL OPEN: sending empty array triggers the Frontend static fallback
+            return NextResponse.json({ roadmap: [] });
+        }
 
     } catch (error) {
         console.error("Roadmap Gen Failed:", error);

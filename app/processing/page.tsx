@@ -21,7 +21,7 @@ export default function ProcessingPage() {
         }, 100);
 
         const timeout = setTimeout(() => {
-            router.push('/map');
+            router.push('/onboarding');
         }, 3000);
 
         return () => {
